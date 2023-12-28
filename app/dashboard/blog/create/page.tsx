@@ -1,43 +1,40 @@
-"use client";
-import React from "react";
+'use client'
 
-import { toast } from "@/components/ui/use-toast";
-import { defaultCreateBlog } from "@/lib/data";
-import { PostgrestSingleResponse } from "@supabase/supabase-js";
-import BlogForm from "../components/BlogForm";
-import { createBlog } from "../../../../lib/actions/blog";
-import { BlogFormSchemaType } from "../schema";
-import { useRouter } from "next/navigation";
+import { toast } from '@/components/ui/use-toast'
+import { links } from '@/lib/constants/links'
+import { defaultCreateBlog } from '@/lib/data'
+import { PostgrestSingleResponse } from '@supabase/supabase-js'
+import { useRouter } from 'next/navigation'
+import { createBlog } from '../../../../lib/actions/blog'
+import BlogForm from '../components/BlogForm'
+import { BlogFormSchemaType } from '../schema'
 
 export default function CreateForm() {
-	const router = useRouter();
+	const router = useRouter()
 
 	const onHandleSubmit = async (data: BlogFormSchemaType) => {
-		const result = JSON.parse(await createBlog(data));
+		const result = JSON.parse(await createBlog(data))
 
-		const { error } = result as PostgrestSingleResponse<null>;
+		const { error } = result as PostgrestSingleResponse<null>
 		if (error?.message) {
 			toast({
-				title: "Fail to create a post 😢",
+				title: 'Fail to create a post 😢',
 				description: (
-					<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-						<code className="text-white">{error.message}</code>
+					<pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+						<code className='text-white'>{error.message}</code>
 					</pre>
 				),
-			});
+			})
 		} else {
 			toast({
-				title: "Successfully create a post 🎉",
+				title: 'Successfully create a post 🎉',
 				description: data.title,
-			});
-			router.push("/dashboard");
+			})
+			router.push(links.dashboard)
 		}
-	};
+	}
 
 	return (
-		<BlogForm
-			onHandleSubmit={onHandleSubmit}
-			defaultBlog={defaultCreateBlog}
-		/>
-	);
+		<BlogForm onHandleSubmit={onHandleSubmit} defaultBlog={defaultCreateBlog} />
+	)
 }

@@ -1,6 +1,6 @@
 import { IBlogDetails } from './types'
 
-export const blogDeafultValue = `
+export const blogDefaultValue = `
 ## Serendipity Chronicles: Tales from a Random Blog
 
 As we wrap up our adventures, let's reflect on the serendipitous moments that defined this journey. The JavaScript snippet below captures a moment of serendipity in code:
@@ -27,7 +27,7 @@ export const blogs = [
 		created_at: '2023-05-15',
 		is_premium: true,
 		is_published: true,
-		content: blogDeafultValue,
+		content: blogDefaultValue,
 	},
 	{
 		id: '2',
@@ -39,7 +39,7 @@ export const blogs = [
 		is_premium: false,
 		is_published: false,
 
-		content: blogDeafultValue,
+		content: blogDefaultValue,
 	},
 	{
 		id: '3',
@@ -50,7 +50,7 @@ export const blogs = [
 		created_at: '2023-08-10',
 		is_premium: false,
 		is_published: false,
-		content: blogDeafultValue,
+		content: blogDefaultValue,
 	},
 	{
 		id: '4',
@@ -61,7 +61,7 @@ export const blogs = [
 		is_premium: true,
 		is_published: false,
 
-		content: blogDeafultValue,
+		content: blogDefaultValue,
 	},
 	{
 		id: '5',
@@ -71,7 +71,7 @@ export const blogs = [
 		created_at: '2023-10-05',
 		is_premium: false,
 		is_published: false,
-		content: blogDeafultValue,
+		content: blogDefaultValue,
 	},
 ]
 
