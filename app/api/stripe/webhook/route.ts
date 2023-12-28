@@ -62,7 +62,7 @@ const onSuccessSubscription = async (
 	const { data } = await supabase
 		.from("users")
 		.update({
-			stripe_subscriptoin_id: subscription_id,
+			stripe_subscription_id: subscription_id,
 			stripe_customer_id: customer_id,
 			subscription_status: status,
 		})
@@ -82,11 +82,11 @@ const onCacnelSubscription = async (
 	const { data, error } = await supabase
 		.from("users")
 		.update({
-			stripe_subscriptoin_id: null,
+			stripe_subscription_id: null,
 			stripe_customer_id: null,
 			subscription_status: status,
 		})
-		.eq("stripe_subscriptoin_id", subscription_id)
+		.eq("stripe_subscription_id", subscription_id)
 		.select("id")
 		.single();
 

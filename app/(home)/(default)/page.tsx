@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import Image from "next/image";
 import { readBlog } from "@/lib/actions/blog";
+import { links } from '@/lib/constants/links'
 
 export default async function Home() {
 	let { data: blogs } = await readBlog();
@@ -15,7 +16,7 @@ export default async function Home() {
 			{blogs.map((blog, index) => {
 				return (
 					<Link
-						href={"/blog/" + blog.id}
+						href={links.blog + blog.id}
 						className="w-full  border rounded-md dark:bg-graident-dark p-5 hover:ring-2 ring-green-500 transition-all cursor-pointer space-y-5 first:lg:col-span-2 first:md:col-span-3"
 						key={index}
 					>
