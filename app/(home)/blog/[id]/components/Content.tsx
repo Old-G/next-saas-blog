@@ -14,21 +14,19 @@ export default function Content({ blogId }: { blogId: string }) {
 		created_at: string
 	} | null>()
 
-	const readBlogContent = async () => {
-		const { data } = await supabase
-			.from('blog_content')
-			.select('*')
-			.eq('blog_id', blogId)
-			.single()
-		setBlog(data)
-		setLoading(false)
-	}
-
 	useEffect(() => {
-		readBlogContent()
+		const readBlogContent = async () => {
+			const { data } = await supabase
+				.from('blog_content')
+				.select('*')
+				.eq('blog_id', blogId)
+				.single()
+			setBlog(data)
+			setLoading(false)
+		}
 
-		// eslint-disable-next-line
-	}, [])
+		readBlogContent()
+	}, [blogId])
 
 	if (loading) {
 		return <BlogContentLoading />

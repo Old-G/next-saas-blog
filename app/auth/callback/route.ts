@@ -2,6 +2,7 @@ import { Database } from '@/lib/types/supabase'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+
 export async function GET(request: Request) {
 	const requestUrl = new URL(request.url)
 	const isAuth = cookies().get('supabase-auth-token')
