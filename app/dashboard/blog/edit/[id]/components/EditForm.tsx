@@ -1,40 +1,37 @@
-"use client";
-import React from "react";
+'use client'
 
-import { toast } from "@/components/ui/use-toast";
+import { toast } from '@/components/ui/use-toast'
 
-import BlogForm from "../../../components/BlogForm";
-import { IBlogDetial } from "@/lib/types";
-import { BlogFormSchemaType } from "../../../schema";
-import { updateBlogDetail } from "../../../../../../lib/actions/blog";
-import { PostgrestSingleResponse } from "@supabase/supabase-js";
-import { redirect, useRouter } from "next/navigation";
+import { IBlogDetails } from '@/lib/types'
+import { PostgrestSingleResponse } from '@supabase/supabase-js'
+import { useRouter } from 'next/navigation'
+import { updateBlogDetail } from '../../../../../../lib/actions/blog'
+import BlogForm from '../../../components/BlogForm'
+import { BlogFormSchemaType } from '../../../schema'
 
-export default function EditForm({ blog }: { blog: IBlogDetial }) {
-	const router = useRouter();
+export default function EditForm({ blog }: { blog: IBlogDetails }) {
+	const router = useRouter()
 
 	const onHandleSubmit = async (data: BlogFormSchemaType) => {
 		const result = JSON.parse(
 			await updateBlogDetail(blog?.id!, data)
-		) as PostgrestSingleResponse<null>;
+		) as PostgrestSingleResponse<null>
 		if (result.error) {
 			toast({
-				title: "Fail to update ",
+				title: 'Fail to update ',
 				description: (
-					<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-						<code className="text-white">
-							{result.error?.message}
-						</code>
+					<pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+						<code className='text-white'>{result.error?.message}</code>
 					</pre>
 				),
-			});
+			})
 		} else {
 			toast({
-				title: "Successfully update 🎉",
-			});
-			router.push("/dashboard");
+				title: 'Successfully update 🎉',
+			})
+			router.push('/dashboard')
 		}
-	};
+	}
 
-	return <BlogForm onHandleSubmit={onHandleSubmit} defaultBlog={blog} />;
+	return <BlogForm onHandleSubmit={onHandleSubmit} defaultBlog={blog} />
 }
