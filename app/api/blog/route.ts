@@ -1,12 +1,6 @@
-import { Database } from '@/lib/types/supabase'
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from '@/lib/supabase/supabase'
 
 export async function GET(request: Request) {
-	const supabase = await createClient<Database>(
-		process.env.NEXT_PUBLIC_SUPABASE_URL!,
-		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-	)
-
 	const { searchParams } = new URL(request.url)
 
 	const id = searchParams.get('id')

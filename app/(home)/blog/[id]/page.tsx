@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 		},
 		openGraph: {
 			title: blog?.title,
-			url: "https://dailyblog-demo.vercel.app/blog" + params.id,
+			url: "https://ginsights.vercel.app/blog" + params.id,
 			siteName: "Startups Daily",
 			images: blog?.image_url,
 			type: "website",
