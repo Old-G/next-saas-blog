@@ -5,7 +5,7 @@ export const links = {
 	dashboard: '/dashboard',
 	blog: '/blog/',
 	create: '/dashboard/blog/create',
-	edit: '/dashboard/blog/edit',
+	edit: '/dashboard/blog/edit/',
 }
 
 export const navLinks = [
