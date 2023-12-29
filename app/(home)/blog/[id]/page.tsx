@@ -2,13 +2,13 @@ import { IBlog } from '@/lib/types'
 import Image from 'next/image'
 import Content from './components/Content'
 
-export async function generateStaticParams() {
-	const { data: blogs } = await fetch(
-		process.env.NEXT_PUBLIC_SITE_URL + '/api/blog?id=*'
-	).then(res => res?.json())
+// export async function generateStaticParams() {
+// 	const { data: blogs } = await fetch(
+// 		process.env.NEXT_PUBLIC_SITE_URL + '/api/blog?id=*'
+// 	).then(res => res?.json())
 
-	return blogs
-}
+// 	return blogs
+// }
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
 	const { data: blog } = (await fetch(
