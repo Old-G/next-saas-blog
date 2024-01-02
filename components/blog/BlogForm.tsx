@@ -25,7 +25,10 @@ import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsSave } from 'react-icons/bs'
 import * as z from 'zod'
-import { BlogFormSchema, BlogFormSchemaType } from '../schema'
+import {
+	BlogFormSchema,
+	BlogFormSchemaType,
+} from '../../app/dashboard/blog/schema'
 
 export default function BlogForm({
 	onHandleSubmit,

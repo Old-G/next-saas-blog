@@ -5,8 +5,8 @@ import { links } from '@/lib/constants/links'
 import { defaultCreateBlog } from '@/lib/data'
 import { PostgrestSingleResponse } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
+import BlogForm from '../../../../components/blog/BlogForm'
 import { createBlog } from '../../../../lib/actions/blog'
-import BlogForm from '../components/BlogForm'
 import { BlogFormSchemaType } from '../schema'
 
 export default function CreateForm() {

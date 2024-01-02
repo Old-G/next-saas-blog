@@ -16,7 +16,7 @@ import { TrashIcon } from '@radix-ui/react-icons'
 import { PostgrestSingleResponse } from '@supabase/supabase-js'
 import { ChangeEvent, useTransition } from 'react'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
-import { deleteBlogById } from '../../../../lib/actions/blog'
+import { deleteBlogById } from '../../lib/actions/blog'
 export default function DeleteAlert({ id }: { id: string }) {
 	const [isPending, startTransition] = useTransition()
 

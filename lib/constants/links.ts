@@ -6,6 +6,8 @@ export const links = {
 	blog: '/blog/',
 	create: '/dashboard/blog/create',
 	edit: '/dashboard/blog/edit/',
+	oferta: '/oferta',
+	privacyPolicy: 'privacy-policy',
 }
 
 export const navLinks = [

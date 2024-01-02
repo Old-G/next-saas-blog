@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { links } from '@/lib/constants/links'
 import { PlusIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
-import BlogTable from './blog/components/BlogTable'
+import BlogTable from '../../components/blog/BlogTable'
 
 export default function Blog() {
 	return (

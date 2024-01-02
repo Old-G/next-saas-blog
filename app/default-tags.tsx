@@ -43,11 +43,11 @@ export default function DefaultTags() {
 			<link rel='shortcut icon' href='/assets/favicons/favicon.ico' />
 
 			<meta name='twitter:card' content='summary' />
-			<meta name='twitter:url' content='https://allgoal.club' />
+			<meta name='twitter:url' content='https://ginsights.vercel.app/' />
 			<meta name='twitter:title' content='Ginsights' />
 			<meta
 				name='twitter:description'
-				content='Turn Goals into Gold with Ginsights!'
+				content='Ginsights | Startups Daily'
 			/>
 			<meta
 				name='twitter:image'
@@ -58,18 +58,18 @@ export default function DefaultTags() {
 			<meta property='og:title' content='Ginsights' />
 			<meta
 				property='og:description'
-				content='Turn Goals into Gold with Ginsights!'
+				content='Ginsights | Startups Daily'
 			/>
 			<meta property='og:site_name' content='Ginsights' />
-			<meta property='og:url' content='https://allgoal.club' />
+			<meta property='og:url' content='https://ginsights.vercel.app/' />
 			<meta
 				property='og:image'
-				content='https://allgoal.club/assets/favicons/apple-touch-icon.png'
+				content='https://ginsights.vercel.app/assets/favicons/apple-touch-icon.png'
 			/>
 
 			<link
 				rel='apple-touch-icon'
-				href='https://allgoal.club/assets/favicons/apple/apple-icon-180.png'
+				href='https://ginsights.vercel.app/assets/favicons/apple/apple-icon-180.png'
 			/>
 
 			<meta name='apple-mobile-web-app-capable' content='yes' />

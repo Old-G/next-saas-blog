@@ -11,7 +11,7 @@ export default async function Home() {
 	}
 
 	return (
-		<div className='w-full grid grid-cols-1 md:grid-cols-3 gap-5 p-5 xl:p-0'>
+		<div className='w-full grid grid-cols-1 md:grid-cols-3 gap-5 mb-10'>
 			{blogs.map((blog, index) => {
 				return (
 					<Link

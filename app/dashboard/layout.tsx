@@ -1,31 +1,50 @@
 import type { Metadata } from 'next'
 
 import { ReactNode } from 'react'
-import NavLinks from './components/NavLinks'
+import NavLinks from '../../components/nav/NavLinks'
 
 export const metadata: Metadata = {
-	metadataBase: new URL('https://dailyblog-demo.vercel.app/'),
+	metadataBase: new URL('https://ginsights.vercel.app/'),
 
 	title: {
-		template: '%s | Dashboard',
-		default: 'Dashboard',
+		template: '%s | Startups Daily',
+		default: 'Startups Daily',
 	},
 	authors: {
-		name: 'chensokheng',
+		name: 'Gleb Zavalov',
 	},
 
 	description:
-		'Empower your decision-making with our intuitive dashboard. Gain valuable insights at a glance with interactive visualizations and real-time analytics. Our dashboard provides a centralized hub for monitoring key metrics, tracking progress, and making data-driven decisions. Streamline your workflow, enhance collaboration, and stay ahead of the curve with customizable widgets and personalized dashboards. Experience the power of data in a user-friendly interface designed to optimize productivity and drive results.',
+		'Откройте для себя передовые инсайты и инновационные идеи на нашем блоге, посвященном стартапам, технологиям и инвестициям. Здесь вы найдете всё от глубоких аналитических статей о AI и Blockchain до эксклюзивных интервью с фаундерами и экспертами венчурного капитала. Наш блог предлагает уникальные перспективы и последние новости в мире Crypto, Web3 и инновационных технологий. Присоединяйтесь к сообществу предпринимателей и инвесторов, стремящихся расширять горизонты и обогащать свои знания с помощью нашего обширного контента.',
 	openGraph: {
 		title: 'Dashboard',
 		description:
-			'Empower your decision-making with our intuitive dashboard. Gain valuable insights at a glance with interactive visualizations and real-time analytics. Our dashboard provides a centralized hub for monitoring key metrics, tracking progress, and making data-driven decisions. Streamline your workflow, enhance collaboration, and stay ahead of the curve with customizable widgets and personalized dashboards. Experience the power of data in a user-friendly interface designed to optimize productivity and drive results.',
-		url: 'https://dailyblog-demo.vercel.app/',
-		siteName: 'Startups Daily',
+			'Откройте для себя передовые инсайты и инновационные идеи на нашем блоге, посвященном стартапам, технологиям и инвестициям. Здесь вы найдете всё от глубоких аналитических статей о AI и Blockchain до эксклюзивных интервью с фаундерами и экспертами венчурного капитала. Наш блог предлагает уникальные перспективы и последние новости в мире Crypto, Web3 и инновационных технологий. Присоединяйтесь к сообществу предпринимателей и инвесторов, стремящихся расширять горизонты и обогащать свои знания с помощью нашего обширного контента.',
+		url: 'https://ginsights.vercel.app/',
+		siteName: 'Ginsights',
 		images: '/og-dashboard.png',
 		type: 'website',
 	},
-	keywords: ['daily web coding', 'chensokheng', 'dailywebcoding'],
+	keywords: [
+		'Startups Daily',
+		'startup',
+		'startup blog',
+		'vc',
+		'blockchain',
+		'web3',
+		'Стартапы',
+		'Инновационные технологии',
+		'Искусственный интеллект (AI)',
+		'Blockchain',
+		'Crypto',
+		'Web3',
+		'Венчурный капитал',
+		'Инвестиции',
+		'Фаундеры',
+		'Аналитика технологий',
+		'Интервью с экспертами',
+		'Новости стартапов',
+	],
 }
 
 export default function Layout({ children }: { children: ReactNode }) {

@@ -8,13 +8,13 @@ import { Poppins } from 'next/font/google'
 import './globals.css'
 import Head from './head'
 
-const inter = Poppins({
+const poppins = Poppins({
 	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 	subsets: ['latin'],
 })
 
 export const metadata: Metadata = {
-	metadataBase: new URL('https://dailyblog-demo.vercel.app/'),
+	metadataBase: new URL('https://ginsights.vercel.app/'),
 
 	title: {
 		template: '%s | Startups Daily',
@@ -25,17 +25,36 @@ export const metadata: Metadata = {
 	},
 
 	description:
-		'Explore a world of captivating stories and insightful articles on our blog. From the latest trends to in-depth analyses, our blog covers a wide range of topics to keep you informed and entertained. Join our community of readers and discover thought-provoking content that sparks curiosity and fosters discussion. Stay updated with our diverse collection of blog posts, written by passionate contributors who share their expertise and unique perspectives. Engage with a platform that goes beyond the ordinary, providing you with enriching content that resonates with your interests.',
+		'Откройте для себя передовые инсайты и инновационные идеи на нашем блоге, посвященном стартапам, технологиям и инвестициям. Здесь вы найдете всё от глубоких аналитических статей о AI и Blockchain до эксклюзивных интервью с фаундерами и экспертами венчурного капитала. Наш блог предлагает уникальные перспективы и последние новости в мире Crypto, Web3 и инновационных технологий. Присоединяйтесь к сообществу предпринимателей и инвесторов, стремящихся расширять горизонты и обогащать свои знания с помощью нашего обширного контента.',
 	openGraph: {
 		title: 'Startups Daily',
 		description:
-			'Explore a world of captivating stories and insightful articles on our blog. From the latest trends to in-depth analyses, our blog covers a wide range of topics to keep you informed and entertained. Join our community of readers and discover thought-provoking content that sparks curiosity and fosters discussion. Stay updated with our diverse collection of blog posts, written by passionate contributors who share their expertise and unique perspectives. Engage with a platform that goes beyond the ordinary, providing you with enriching content that resonates with your interests.',
-		url: 'https://dailyblog-demo.vercel.app/',
-		siteName: 'Startups Daily',
+			'Откройте для себя передовые инсайты и инновационные идеи на нашем блоге, посвященном стартапам, технологиям и инвестициям. Здесь вы найдете всё от глубоких аналитических статей о AI и Blockchain до эксклюзивных интервью с фаундерами и экспертами венчурного капитала. Наш блог предлагает уникальные перспективы и последние новости в мире Crypto, Web3 и инновационных технологий. Присоединяйтесь к сообществу предпринимателей и инвесторов, стремящихся расширять горизонты и обогащать свои знания с помощью нашего обширного контента.',
+		url: 'https://ginsights.vercel.app/',
+		siteName: 'Ginsights',
 		images: '/og.png',
 		type: 'website',
 	},
-	keywords: ['Startups Daily', 'startup', 'startup blog'],
+	keywords: [
+		'Startups Daily',
+		'startup',
+		'startup blog',
+		'vc',
+		'blockchain',
+		'web3',
+		'Стартапы',
+		'Инновационные технологии',
+		'Искусственный интеллект (AI)',
+		'Blockchain',
+		'Crypto',
+		'Web3',
+		'Венчурный капитал',
+		'Инвестиции',
+		'Фаундеры',
+		'Аналитика технологий',
+		'Интервью с экспертами',
+		'Новости стартапов',
+	],
 }
 
 // export const metadata: Metadata = {
@@ -70,14 +89,14 @@ export default function RootLayout({
 			<head />
 			<Head />
 
-			<body className={cn('antialiased dark:bg-[#09090B]', inter.className)}>
+			<body className={cn('antialiased dark:bg-[#09090B]', poppins.className)}>
 				<ThemeProvider
 					attribute='class'
 					defaultTheme='dark'
 					enableSystem
 					disableTransitionOnChange
 				>
-					<main className='max-w-7xl mx-auto lg:py-10 space-y-10 p-5 lg:p-0'>
+					<main className='max-w-7xl mx-auto lg:pt-10 space-y-10 p-5 lg:p-0'>
 						<Navbar />
 						{children}
 					</main>

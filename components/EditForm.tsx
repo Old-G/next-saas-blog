@@ -5,9 +5,9 @@ import { toast } from '@/components/ui/use-toast'
 import { IBlogDetails } from '@/lib/types'
 import { PostgrestSingleResponse } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
-import { updateBlogDetail } from '../../../../../../lib/actions/blog'
-import BlogForm from '../../../components/BlogForm'
-import { BlogFormSchemaType } from '../../../schema'
+import { BlogFormSchemaType } from '../app/dashboard/blog/schema'
+import { updateBlogDetail } from '../lib/actions/blog'
+import BlogForm from './blog/BlogForm'
 
 export default function EditForm({ blog }: { blog: IBlogDetails }) {
 	const router = useRouter()

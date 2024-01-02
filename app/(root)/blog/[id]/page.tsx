@@ -1,6 +1,6 @@
 import { IBlog } from '@/lib/types'
 import Image from 'next/image'
-import Content from './components/Content'
+import Content from '../../../../components/skeletons-content/Content'
 
 // export async function generateStaticParams() {
 // 	const { data: blogs } = await fetch(
@@ -23,11 +23,30 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 		openGraph: {
 			title: blog?.title,
 			url: 'https://ginsights.vercel.app/blog' + params.id,
-			siteName: 'Startups Daily',
+			siteName: 'Ginsights',
 			images: blog?.image_url,
 			type: 'website',
 		},
-		keywords: ['daily web coding', 'chensokheng', 'dailywebcoding'],
+		keywords: [
+			'Startups Daily',
+			'startup',
+			'startup blog',
+			'vc',
+			'blockchain',
+			'web3',
+			'Стартапы',
+			'Инновационные технологии',
+			'Искусственный интеллект (AI)',
+			'Blockchain',
+			'Crypto',
+			'Web3',
+			'Венчурный капитал',
+			'Инвестиции',
+			'Фаундеры',
+			'Аналитика технологий',
+			'Интервью с экспертами',
+			'Новости стартапов',
+		],
 	}
 }
 
@@ -41,7 +60,7 @@ export default async function page({ params }: { params: { id: string } }) {
 	}
 
 	return (
-		<div className='max-w-5xl mx-auto min-h-screen  pt-10 space-y-10'>
+		<div className='max-w-5xl mx-auto min-h-screen py-10 space-y-10 text-center md:text-left'>
 			<div className='sm:px-10 space-y-5 text-ellipsis overflow-hidden'>
 				<h1 className=' text-3xl font-bold dark:text-gray-200 text-ellipsis overflow-hidden'>
 					{blog?.title}
