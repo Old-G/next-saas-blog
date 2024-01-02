@@ -34,7 +34,7 @@ export default async function Home() {
 								{new Date(blog.created_at).toDateString()}
 							</p>
 
-							<h1 className='text-xl font-bold dark:text-gray-300'>
+							<h1 className='text-xl font-bold dark:text-gray-300 text-ellipsis overflow-hidden'>
 								{blog.title}
 							</h1>
 						</div>

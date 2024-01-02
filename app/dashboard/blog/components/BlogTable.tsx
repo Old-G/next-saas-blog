@@ -26,7 +26,7 @@ export default async function BlogTable() {
 								is_premium: !blog.is_premium,
 							} as IBlog)
 
-							const updatePulished = updateBlogById.bind(null, blog.id, {
+							const updatePublished = updateBlogById.bind(null, blog.id, {
 								is_published: !blog.is_published,
 							} as IBlog)
 
@@ -43,7 +43,7 @@ export default async function BlogTable() {
 
 									<SwitchForm
 										checked={blog.is_published}
-										onSubmit={updatePulished}
+										onSubmit={updatePublished}
 										name='publish'
 									/>
 

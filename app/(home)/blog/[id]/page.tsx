@@ -42,8 +42,8 @@ export default async function page({ params }: { params: { id: string } }) {
 
 	return (
 		<div className='max-w-5xl mx-auto min-h-screen  pt-10 space-y-10'>
-			<div className='sm:px-10 space-y-5'>
-				<h1 className=' text-3xl font-bold dark:text-gray-200'>
+			<div className='sm:px-10 space-y-5 text-ellipsis overflow-hidden'>
+				<h1 className=' text-3xl font-bold dark:text-gray-200 text-ellipsis overflow-hidden'>
 					{blog?.title}
 				</h1>
 				<p className='text-sm dark:text-gray-400'>

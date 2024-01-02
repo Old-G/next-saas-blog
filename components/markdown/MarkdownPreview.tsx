@@ -16,7 +16,10 @@ export default function MarkdownPreview({
 }) {
 	return (
 		<Markdown
-			className={cn('dark:text-gray-200 space-y-8', className)}
+			className={cn(
+				'dark:text-gray-200 space-y-8 text-ellipsis overflow-hidden',
+				className
+			)}
 			rehypePlugins={[rehypeHighlight]}
 			components={{
 				h1: ({ node, ...props }) => {
