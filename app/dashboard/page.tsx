@@ -4,7 +4,7 @@ import { PlusIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import BlogTable from '../../components/blog/BlogTable'
 
-export default function Blog() {
+export default function Dashboard() {
 	return (
 		<div className='space-y-5'>
 			<div className='flex items-center justify-between'>

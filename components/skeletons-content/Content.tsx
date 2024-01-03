@@ -1,7 +1,8 @@
 'use client'
 import MarkdownPreview from '@/components/markdown/MarkdownPreview'
 import Checkout from '@/components/stripe/Checkout'
-import { supabase } from '@/lib/supabase/supabase'
+import { Database } from '@/lib/types/supabase'
+import { createBrowserClient } from '@supabase/ssr'
 import { useEffect, useState } from 'react'
 import { BlogContentLoading } from './Skeleton'
 
@@ -13,6 +14,11 @@ export default function Content({ blogId }: { blogId: string }) {
 		content: string
 		created_at: string
 	} | null>()
+
+	const supabase = createBrowserClient<Database>(
+		process.env.NEXT_PUBLIC_SUPABASE_URL!,
+		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+	)
 
 	useEffect(() => {
 		const readBlogContent = async () => {
@@ -26,7 +32,7 @@ export default function Content({ blogId }: { blogId: string }) {
 		}
 
 		readBlogContent()
-	}, [blogId])
+	}, [blogId, supabase])
 
 	if (loading) {
 		return <BlogContentLoading />

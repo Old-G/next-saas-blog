@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { ReactNode } from 'react'
-import NavLinks from '../../components/nav/NavLinks'
+import NavLinks from '../../components/NavLinks'
 
 export const metadata: Metadata = {
 	metadataBase: new URL('https://ginsights.vercel.app/'),

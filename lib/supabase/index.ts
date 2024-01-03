@@ -19,7 +19,7 @@ export async function createSupabaseServerClient() {
 	);
 }
 
-export async function createSupbaseAdmin() {
+export async function createSupabaseAdmin() {
 	return createClient<Database>(
 		process.env.NEXT_PUBLIC_SUPABASE_URL!,
 		process.env.SERVICE_ROLE!,

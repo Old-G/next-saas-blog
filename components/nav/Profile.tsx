@@ -6,8 +6,8 @@ import {
 } from '@/components/ui/popover'
 import { links } from '@/lib/constants/links'
 import { useUser } from '@/lib/store/user'
-import { supabase } from '@/lib/supabase/supabase'
 import { DashboardIcon, LockOpen1Icon } from '@radix-ui/react-icons'
+import { createBrowserClient } from '@supabase/ssr'
 import Image from 'next/image'
 import Link from 'next/link'
 import ManageBill from '../stripe/ManageBill'
@@ -15,6 +15,11 @@ import ManageBill from '../stripe/ManageBill'
 export default function Profile() {
 	const user = useUser(state => state.user)
 	const setUser = useUser(state => state.setUser)
+
+	const supabase = createBrowserClient(
+		process.env.NEXT_PUBLIC_SUPABASE_URL!,
+		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+	)
 
 	const handleLogout = async () => {
 		await supabase.auth.signOut()

@@ -11,9 +11,8 @@ export async function GET(request: Request) {
 		return NextResponse.redirect(requestUrl.origin)
 	}
 
-	const { searchParams } = new URL(request.url)
-	const code = searchParams.get('code')
-	const next = searchParams.get('next') ?? '/'
+	const code = requestUrl.searchParams.get('code')
+	const next = requestUrl.searchParams.get('next') ?? '/'
 
 	if (code) {
 		const cookieStore = cookies()

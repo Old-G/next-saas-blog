@@ -10,9 +10,9 @@ export default function DefaultTags() {
 				name='msapplication-config'
 				content='/assets/favicons/browserconfig.xml'
 			/>
-			<meta name='msapplication-TileColor' content='#2d89ef' />
+			<meta name='msapplication-TileColor' content='#000000' />
 			<meta name='msapplication-tap-highlight' content='no' />
-			<meta name='theme-color' content='#4182d8' />
+			<meta name='theme-color' content='#000000' />
 			<meta
 				name='viewport'
 				content='initial-scale=1, viewport-fit=cover, width=device-width, user-scalable=no'
@@ -38,17 +38,14 @@ export default function DefaultTags() {
 			<link
 				rel='mask-icon'
 				href='/assets/favicons/safari-pinned-tab.svg'
-				color='#5bbad5'
+				color='#ffffff'
 			/>
 			<link rel='shortcut icon' href='/assets/favicons/favicon.ico' />
 
 			<meta name='twitter:card' content='summary' />
 			<meta name='twitter:url' content='https://ginsights.vercel.app/' />
 			<meta name='twitter:title' content='Ginsights' />
-			<meta
-				name='twitter:description'
-				content='Ginsights | Startups Daily'
-			/>
+			<meta name='twitter:description' content='Ginsights | Startups Daily' />
 			<meta
 				name='twitter:image'
 				content='/assets/favicons/android-chrome-192x192.png'
@@ -56,10 +53,7 @@ export default function DefaultTags() {
 			<meta name='twitter:creator' content='' />
 			<meta property='og:type' content='website' />
 			<meta property='og:title' content='Ginsights' />
-			<meta
-				property='og:description'
-				content='Ginsights | Startups Daily'
-			/>
+			<meta property='og:description' content='Ginsights | Startups Daily' />
 			<meta property='og:site_name' content='Ginsights' />
 			<meta property='og:url' content='https://ginsights.vercel.app/' />
 			<meta

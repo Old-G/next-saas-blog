@@ -16,6 +16,17 @@ const poppins = Poppins({
 export const metadata: Metadata = {
 	metadataBase: new URL('https://ginsights.vercel.app/'),
 
+	manifest: '/manifest.json',
+	applicationName: 'Ginsights',
+	appleWebApp: {
+		capable: true,
+		title: 'Ginsights',
+		statusBarStyle: 'black-translucent',
+	},
+	formatDetection: {
+		telephone: false,
+	},
+
 	title: {
 		template: '%s | Startups Daily',
 		default: 'Startups Daily',
@@ -56,21 +67,6 @@ export const metadata: Metadata = {
 		'Новости стартапов',
 	],
 }
-
-// export const metadata: Metadata = {
-//   title: 'Ginsights',
-//   description: 'Turn Goals into Gold with Ginsights!',
-//   manifest: '/manifest.json',
-//   applicationName: 'Ginsights',
-//   appleWebApp: {
-//     capable: true,
-//     title: 'Ginsights',
-//     statusBarStyle: 'black-translucent',
-//   },
-//   formatDetection: {
-//     telephone: false,
-//   },
-// }
 
 export const viewport = {
 	initialScale: 1,

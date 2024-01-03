@@ -1,10 +1,16 @@
 'use client'
 import { useUser } from '@/lib/store/user'
-import { supabase } from '@/lib/supabase/supabase'
+import { Database } from '@/lib/types/supabase'
+import { createBrowserClient } from '@supabase/ssr'
 import { useEffect } from 'react'
 
 export default function SessionProvider() {
 	const setUser = useUser(state => state.setUser)
+
+	const supabase = createBrowserClient<Database>(
+		process.env.NEXT_PUBLIC_SUPABASE_URL!,
+		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+	)
 
 	useEffect(() => {
 		const readSession = async () => {

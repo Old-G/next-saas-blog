@@ -10,7 +10,7 @@
 		"standalone",
 		"browser"
 	],
-	"description": "All Goal: Achieve, Earn, Celebrate. All Goal is the premier Achieve-to-Earn platform, designed to motivate and reward users for reaching personal milestones. Set goals, track progress, and earn tokens in a supportive community. Dive into All Goal and transform your aspirations into tangible rewards.",
+	"description": "Откройте для себя передовые инсайты и инновационные идеи на нашем блоге, посвященном стартапам, технологиям и инвестициям. Здесь вы найдете всё от глубоких аналитических статей о AI и Blockchain до эксклюзивных интервью с фаундерами и экспертами венчурного капитала. Наш блог предлагает уникальные перспективы и последние новости в мире Crypto, Web3 и инновационных технологий. Присоединяйтесь к сообществу предпринимателей и инвесторов, стремящихся расширять горизонты и обогащать свои знания с помощью нашего обширного контента.",
 	"lang": "en",
 	"dir": "auto",
 	"theme_color": "#0a0e14",
@@ -56,12 +56,12 @@
 		"method": "POST",
 		"enctype": "multipart/form-data",
 		"params": {
-			"title": "Share Goal",
-			"text": "Share Your goal with your friends",
+			"title": "Share Article",
+			"text": "Share Article with your friends",
 			"url": "/",
 			"files": [
 				{
-					"name": "goals",
+					"name": "blogs",
 					"accept": "application/json"
 				}
 			]
@@ -70,7 +70,7 @@
 	"prefer_related_applications": false,
 	"shortcuts": [
 		{
-			"name": "All Goal",
+			"name": "Ginsights",
 			"url": "The url you would like to open when the user chooses this shortcut. This must be a URL local to your PWA. For example: If my start_url is /, this URL must be something like /shortcut",
 			"description": "A description of the functionality of this shortcut"
 		}
