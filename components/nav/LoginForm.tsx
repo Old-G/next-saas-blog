@@ -41,7 +41,7 @@ export default function LoginForm() {
 	}
 
 	return (
-		<div className='flex flex-col md:flex-row items-center space-y-2 md:space-x-2'>
+		<div className='flex flex-col md:flex-row items-center space-y-2 md:space-x-2 md:space-y-0'>
 			<Button
 				className='flex items-center gap-2'
 				variant='outline'

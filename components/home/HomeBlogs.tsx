@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import SpinnerComponent from '../SpinnerComponent'
 import { Button } from '../ui/button'
 
 const HomeBlogs = () => {
@@ -48,7 +49,11 @@ const HomeBlogs = () => {
 	}
 
 	if (!blogs?.length) {
-		return <div>No blogs available.</div>
+		return (
+			<div className='flex justify-center items-center -mt-32'>
+				<SpinnerComponent />
+			</div>
+		)
 	}
 
 	return (
