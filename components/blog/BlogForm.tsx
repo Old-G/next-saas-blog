@@ -11,6 +11,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
+import { handleImage } from '@/lib/helpers'
 import { IBlogDetails } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -20,8 +21,9 @@ import {
 	RocketIcon,
 	StarIcon,
 } from '@radix-ui/react-icons'
+import { createClient } from '@supabase/supabase-js'
 import Image from 'next/image'
-import { useState, useTransition } from 'react'
+import { useCallback, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { BsSave } from 'react-icons/bs'
 import * as z from 'zod'
@@ -35,10 +37,17 @@ export default function BlogForm({
 	defaultBlog,
 }: {
 	defaultBlog: IBlogDetails
-	onHandleSubmit: (data: BlogFormSchemaType) => void
+	onHandleSubmit: (data: BlogFormSchemaType, imageFile: string) => void
 }) {
 	const [isPending, startTransition] = useTransition()
 	const [isPreview, setPreview] = useState(false)
+	const [files, setFiles] = useState<File[]>([])
+	const [uploadImage, setUploadImage] = useState<null | string>(null)
+
+	const supabase = createClient(
+		process.env.NEXT_PUBLIC_SUPABASE_URL!,
+		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+	)
 
 	const form = useForm<z.infer<typeof BlogFormSchema>>({
 		mode: 'all',
@@ -47,16 +56,41 @@ export default function BlogForm({
 			title: defaultBlog?.title,
 			content: defaultBlog?.blog_content.content,
 			image_url: defaultBlog?.image_url,
+			image_file: '',
 			is_premium: defaultBlog?.is_premium,
 			is_published: defaultBlog?.is_published,
 		},
 	})
 
-	const onSubmit = (data: z.infer<typeof BlogFormSchema>) => {
-		startTransition(() => {
-			onHandleSubmit(data)
-		})
-	}
+	// `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET_URL}${userState.image}`
+
+	const onSubmit = useCallback(
+		async (data: z.infer<typeof BlogFormSchema>) => {
+			startTransition(async () => {
+				let finalImageUrl = data.image_url // Use the existing image URL by default
+
+				if (files.length > 0) {
+					const file = files[0]
+					const filePath = `${Date.now()}-${file.name}`
+
+					const { data: uploadData, error: uploadError } =
+						await supabase.storage.from('images').upload(filePath, file)
+
+					if (uploadError) {
+						console.error('Error uploading file:', uploadError)
+						return
+					}
+
+					if (uploadData && uploadData.path) {
+						finalImageUrl = uploadData.path // Use the new image URL
+					}
+				}
+
+				onHandleSubmit(data, `${finalImageUrl}`)
+			})
+		},
+		[files, onHandleSubmit, supabase.storage]
+	)
 
 	return (
 		<Form {...form}>
@@ -79,7 +113,7 @@ export default function BlogForm({
 							{!isPreview ? (
 								<>
 									<EyeOpenIcon />
-									Preivew
+									Preview
 								</>
 							) : (
 								<>
@@ -168,7 +202,7 @@ export default function BlogForm({
 											className={cn(
 												'lg:px-10',
 												isPreview
-													? 'mx-auto w-full lg:w-4/5 '
+													? 'mx-auto w-full lg:w-4/5 my-7'
 													: ' w-1/2 lg:block hidden '
 											)}
 										>
@@ -200,7 +234,8 @@ export default function BlogForm({
 									<div
 										className={cn(
 											'w-full flex divide-x p-2 gap-2 items-center',
-											isPreview ? 'divide-x-0' : 'divide-x'
+											isPreview ? 'divide-x-0' : 'divide-x',
+											isPreview && !form.getValues().image_url && 'hidden'
 										)}
 									>
 										<Input
@@ -221,18 +256,26 @@ export default function BlogForm({
 											)}
 										>
 											{isPreview ? (
-												<div className='w-full h-80 relative mt-10 border rounded-md'>
-													<Image
-														src={form.getValues().image_url}
-														alt='preview'
-														fill
-														className=' object-cover object-center rounded-md'
-													/>
-												</div>
+												<>
+													{form.getValues().image_url && (
+														<div className='w-full h-80 relative mt-10 border rounded-md'>
+															<Image
+																src={form.getValues().image_url || ''}
+																alt='preview'
+																fill
+																className='object-cover object-center rounded-md'
+															/>
+														</div>
+													)}
+												</>
 											) : (
-												<p className='text-gray-400'>
-													👆 click on preview to see image
-												</p>
+												<div className='text-gray-400 flex items-center'>
+													👆 click on{' '}
+													<div className='flex items-center mx-2 text-white border px-3 py-2 rounded-md'>
+														<EyeOpenIcon className='mr-2' /> Preview
+													</div>
+													to see image
+												</div>
 											)}
 										</div>
 									</div>
@@ -244,6 +287,57 @@ export default function BlogForm({
 							</FormItem>
 						)
 					}}
+				/>
+
+				<FormField
+					control={form.control}
+					name='image_file'
+					render={({ field }) => (
+						<FormItem>
+							<FormControl>
+								<div
+									className={cn(
+										'w-full flex divide-x p-2 gap-2 items-center',
+										isPreview ? 'divide-x-0' : 'divide-x'
+									)}
+								>
+									<Input
+										type='file'
+										accept='image/*'
+										placeholder='Add profile photo'
+										className={cn(
+											'border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 ',
+											isPreview ? 'w-0 p-0' : 'w-full lg:w-1/2'
+										)}
+										onChange={e => handleImage(e, field.onChange, setFiles)}
+									/>
+									<div
+										className={cn(
+											' relative',
+											isPreview
+												? 'px-0 mx-auto w-full lg:w-4/5 '
+												: 'px-10 w-1/2 lg:block hidden'
+										)}
+									>
+										{isPreview && (
+											<div className='w-full h-80 relative border rounded-md'>
+												<Image
+													src={field?.value}
+													alt='preview'
+													fill
+													className=' object-cover object-center rounded-md'
+												/>
+											</div>
+										)}
+									</div>
+								</div>
+							</FormControl>
+
+							<div className='px-3'>
+								<FormMessage />
+							</div>
+						</FormItem>
+					)}
 				/>
 
 				<FormField

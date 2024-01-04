@@ -1,3 +1,4 @@
+import { normalizeImageUrl } from '@/lib/helpers'
 import { IBlog } from '@/lib/types'
 import Image from 'next/image'
 import Content from '../../../../components/skeletons-content/Content'
@@ -73,7 +74,7 @@ export default async function page({ params }: { params: { id: string } }) {
 			<div className='w-full h-96 relative'>
 				<Image
 					priority
-					src={blog?.image_url!}
+					src={normalizeImageUrl(blog?.image_url!)}
 					alt='cover'
 					fill
 					className=' object-cover object-center rounded-md border-[0.5px] border-zinc-600'

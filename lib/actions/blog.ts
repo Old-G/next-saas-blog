@@ -8,19 +8,29 @@ import { links } from '../constants/links'
 
 const DASHBOARD = '/dashboard/blog'
 
-export async function createBlog(data: {
-	content: string
-	title: string
-	image_url: string
-	is_premium: boolean
-	is_published: boolean
-}) {
+export async function createBlog(
+	data: {
+		content: string
+		title: string
+		image_url: string
+		is_premium: boolean
+		is_published: boolean
+	},
+	imageFile: string
+) {
 	const { ['content']: excludedKey, ...blog } = data
+
+	console.log(blog)
 
 	const supabase = await createSupabaseServerClient()
 	const blogResult = await supabase
 		.from('blog')
-		.insert(blog)
+		.insert({
+			title: blog.title,
+			is_premium: blog.is_premium,
+			is_published: blog.is_published,
+			image_url: blog.image_url || imageFile,
+		})
 		.select('id')
 		.single()
 
@@ -93,12 +103,21 @@ export async function updateBlogById(blogId: string, data: IBlog) {
 
 export async function updateBlogDetail(
 	blogId: string,
-	data: BlogFormSchemaType
+	data: BlogFormSchemaType,
+	imageFile: string
 ) {
 	const { ['content']: excludedKey, ...blog } = data
 
 	const supabase = await createSupabaseServerClient()
-	const resultBlog = await supabase.from('blog').update(blog).eq('id', blogId)
+	const resultBlog = await supabase
+		.from('blog')
+		.update({
+			title: blog.title,
+			is_premium: blog.is_premium,
+			is_published: blog.is_published,
+			image_url: blog.image_url || imageFile,
+		})
+		.eq('id', blogId)
 	if (resultBlog.error) {
 		return JSON.stringify(resultBlog)
 	} else {

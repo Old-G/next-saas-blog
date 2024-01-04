@@ -1,5 +1,6 @@
 import { readBlog } from '@/lib/actions/blog'
 import { links } from '@/lib/constants/links'
+import { normalizeImageUrl } from '@/lib/helpers'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -22,7 +23,7 @@ export default async function Home() {
 						<div className='w-full h-72 sm:w-full  md:h-64 xl:h-96  relative'>
 							<Image
 								priority
-								src={blog.image_url}
+								src={normalizeImageUrl(blog.image_url)}
 								alt='cover'
 								fill
 								className=' rounded-md object-cover object-center'

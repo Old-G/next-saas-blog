@@ -31,14 +31,19 @@ export default function DeleteAlert({ id }: { id: string }) {
 				toast({
 					title: 'Fail to update ',
 					description: (
-						<pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-							<code className='text-white'>{error?.message}</code>
-						</pre>
+						<div className='mt-2 border-red-400 rounded-md bg-slate-950 p-4'>
+							<p className=''>{error.message}</p>
+						</div>
 					),
 				})
 			} else {
 				toast({
 					title: 'Successfully delete 🎉',
+					description: (
+						<div className='mt-2 border-green-400 rounded-md bg-slate-950 p-4'>
+							<p className=''>Article Deleted</p>
+						</div>
+					),
 				})
 			}
 		})
