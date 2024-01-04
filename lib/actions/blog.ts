@@ -20,8 +20,6 @@ export async function createBlog(
 ) {
 	const { ['content']: excludedKey, ...blog } = data
 
-	console.log(blog)
-
 	const supabase = await createSupabaseServerClient()
 	const blogResult = await supabase
 		.from('blog')
@@ -46,16 +44,31 @@ export async function createBlog(
 	}
 }
 
-export async function readBlog() {
+export async function readFirstBlog() {
 	const supabase = await createSupabaseServerClient()
+
+	const fixedFirstBlogId = '17744d19-5921-4f4f-9715-e990578e8828'
+
+	return supabase
+		.from('blog')
+		.select('*')
+		.eq('id', fixedFirstBlogId)
+		.eq('is_published', true)
+		.single()
+}
+
+export async function readBlogs(from: number, to: number) {
+	const supabase = await createSupabaseServerClient()
+
 	return supabase
 		.from('blog')
 		.select('*')
 		.eq('is_published', true)
 		.order('created_at', { ascending: false })
+		.range(from, to)
 }
 
-export async function readBlogAdmin() {
+export async function readBlogAdmin(from: number, to: number) {
 	// await new Promise((resolve) => setTimeout(resolve, 2000));
 
 	const supabase = await createSupabaseServerClient()
@@ -63,6 +76,7 @@ export async function readBlogAdmin() {
 		.from('blog')
 		.select('*')
 		.order('created_at', { ascending: false })
+		.range(from, to)
 }
 
 export async function readBlogById(blogId: string) {

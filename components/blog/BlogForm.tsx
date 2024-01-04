@@ -298,7 +298,8 @@ export default function BlogForm({
 								<div
 									className={cn(
 										'w-full flex divide-x p-2 gap-2 items-center',
-										isPreview ? 'divide-x-0' : 'divide-x'
+										isPreview ? 'divide-x-0' : 'divide-x',
+										isPreview && !form.getValues().image_file && 'hidden'
 									)}
 								>
 									<Input

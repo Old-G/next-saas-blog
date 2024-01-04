@@ -33,3 +33,12 @@ export function normalizeImageUrl(imagePath: string) {
 		return `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}${imagePath}`
 	}
 }
+
+export const getFromAndTo = (page: number) => {
+	const itemPerPage = 8
+
+	let from = page * itemPerPage
+	let to = from + itemPerPage - 1
+
+	return { from, to }
+}

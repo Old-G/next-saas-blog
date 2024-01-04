@@ -12,7 +12,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
-import { TrashIcon } from '@radix-ui/react-icons'
 import { PostgrestSingleResponse } from '@supabase/supabase-js'
 import { ChangeEvent, useTransition } from 'react'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
@@ -53,7 +52,7 @@ export default function DeleteAlert({ id }: { id: string }) {
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
 				<Button className='flex gap-2 items-center' variant='outline'>
-					<TrashIcon />
+					{/* <TrashIcon /> */}
 					Delete
 				</Button>
 			</AlertDialogTrigger>
