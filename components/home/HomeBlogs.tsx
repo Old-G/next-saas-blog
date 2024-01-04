@@ -16,8 +16,6 @@ const HomeBlogs = () => {
 	const [blogs, setBlogs] = useState<any>([])
 	const [active, setActive] = useState(false)
 
-	console.log(blogs)
-
 	const fetchBlog = async () => {
 		const { data: firstBlog } = await readFirstBlog()
 		setBlog(firstBlog)
