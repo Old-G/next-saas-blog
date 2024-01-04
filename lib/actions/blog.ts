@@ -68,7 +68,7 @@ export async function readBlogs(from: number, to: number) {
 		.range(from, to)
 }
 
-export async function readBlogAdmin(from: number, to: number) {
+export async function readBlogAdmin() {
 	// await new Promise((resolve) => setTimeout(resolve, 2000));
 
 	const supabase = await createSupabaseServerClient()
@@ -76,13 +76,14 @@ export async function readBlogAdmin(from: number, to: number) {
 		.from('blog')
 		.select('*')
 		.order('created_at', { ascending: false })
-		.range(from, to)
+	// .range(from, to)
 }
 
 export async function readBlogById(blogId: string) {
 	const supabase = await createSupabaseServerClient()
 	return supabase.from('blog').select('*').eq('id', blogId).single()
 }
+
 export async function readBlogIds() {
 	const supabase = await createSupabaseServerClient()
 	return supabase.from('blog').select('id')
