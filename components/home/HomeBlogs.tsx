@@ -16,6 +16,8 @@ const HomeBlogs = () => {
 	const [blogs, setBlogs] = useState<any>([])
 	const [active, setActive] = useState(false)
 
+	console.log(blogs)
+
 	const fetchBlog = async () => {
 		const { data: firstBlog } = await readFirstBlog()
 		setBlog(firstBlog)
@@ -120,13 +122,15 @@ const HomeBlogs = () => {
 				})}
 			</div>
 
-			<Button
-				disabled={active}
-				onClick={handleNextClick}
-				className='flex justify-center py-7 mb-10 w-full border rounded-md bg-gradient-dark text-white hover:bg-gradient-dark hover:ring-2 ring-green-500 transition-all'
-			>
-				Следующие блоги
-			</Button>
+			{blogs?.length && (
+				<Button
+					disabled={active}
+					onClick={handleNextClick}
+					className='flex justify-center py-7 mb-10 w-full border rounded-md bg-gradient-dark text-white hover:bg-gradient-dark hover:ring-2 ring-green-500 transition-all'
+				>
+					Следующие блоги
+				</Button>
+			)}
 		</>
 	)
 }
