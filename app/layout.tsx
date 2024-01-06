@@ -3,6 +3,7 @@ import Navbar from '@/components/nav/Navbar'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
 import { cn } from '@/lib/utils'
+import { Analytics } from '@vercel/analytics/react'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import './globals.css'
@@ -95,6 +96,8 @@ export default function RootLayout({
 					<main className='max-w-7xl mx-auto lg:pt-10 space-y-10 p-5 lg:p-0'>
 						<Navbar />
 						{children}
+
+						<Analytics />
 					</main>
 				</ThemeProvider>
 
