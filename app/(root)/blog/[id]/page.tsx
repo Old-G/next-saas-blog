@@ -71,13 +71,13 @@ export default async function page({ params }: { params: { id: string } }) {
 				</p>
 			</div>
 
-			<div className='w-full h-96 relative'>
+			<div className='w-full h-[335px] md:h-[1000px] relative'>
 				<Image
 					priority
 					src={normalizeImageUrl(blog?.image_url!)}
 					alt='cover'
 					fill
-					className=' object-cover object-center rounded-md border-[0.5px] border-zinc-600'
+					className='object-contain md:object-cover object-center rounded-md md:border-[0.5px] md:border-zinc-600'
 					sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 				/>
 			</div>
