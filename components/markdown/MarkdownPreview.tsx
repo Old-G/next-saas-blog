@@ -4,6 +4,7 @@ import rehypeHighlight from 'rehype-highlight'
 
 import { cn } from '@/lib/utils'
 import 'highlight.js/styles/atom-one-dark.min.css'
+import Image from 'next/image'
 import { PiTerminalThin } from 'react-icons/pi'
 import CopyButton from './CopyButton'
 
@@ -22,6 +23,42 @@ export default function MarkdownPreview({
 			)}
 			rehypePlugins={[rehypeHighlight]}
 			components={{
+				//@ts-ignore
+				p: (paragraph: { children?: boolean; node?: any }) => {
+					const { node } = paragraph
+
+					if (node.children[0].tagName === 'img') {
+						const image = node.children[0]
+						const metastring = image.properties.alt
+						const alt = metastring?.replace(/ *\{[^)]*\} */g, '')
+						const metaWidth = metastring.match(/{([^}]+)x/)
+						const metaHeight = metastring.match(/x([^}]+)}/)
+						const width = metaWidth ? metaWidth[1] : '768'
+						const height = metaHeight ? metaHeight[1] : '432'
+						const isPriority = metastring?.toLowerCase().match('{priority}')
+						const hasCaption = metastring?.toLowerCase().includes('{caption:')
+						const caption = metastring?.match(/{caption: (.*?)}/)?.pop()
+
+						return (
+							<div className='w-full h-80 relative mt-10 border rounded-md'>
+								<Image
+									src={image.properties.src}
+									fill
+									className='object-cover object-center rounded-md'
+									alt={alt}
+									priority={isPriority}
+								/>
+								{hasCaption ? (
+									<div className='caption' aria-label={caption}>
+										{caption}
+									</div>
+								) : null}
+							</div>
+						)
+					}
+					return <p>{paragraph.children}</p>
+				},
+
 				h1: ({ node, ...props }) => {
 					return <h1 {...props} className='text-3xl font-bold' />
 				},

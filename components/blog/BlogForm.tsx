@@ -12,10 +12,16 @@ import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { handleImage } from '@/lib/helpers'
+import {
+	deleteImageFromSupabase,
+	handleFileChange,
+	updateDatabaseWithImagePaths,
+} from '@/lib/helpers/blogHelpers'
 import { IBlogDetails } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
+	Cross1Icon,
 	EyeOpenIcon,
 	Pencil1Icon,
 	RocketIcon,
@@ -23,14 +29,16 @@ import {
 } from '@radix-ui/react-icons'
 import { createClient } from '@supabase/supabase-js'
 import Image from 'next/image'
-import { useCallback, useState, useTransition } from 'react'
-import { useForm } from 'react-hook-form'
+import { useState, useTransition } from 'react'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { BsSave } from 'react-icons/bs'
 import * as z from 'zod'
 import {
 	BlogFormSchema,
 	BlogFormSchemaType,
 } from '../../app/dashboard/blog/schema'
+import { Button } from '../ui/button'
+import { toast } from '../ui/use-toast'
 
 export default function BlogForm({
 	onHandleSubmit,
@@ -42,7 +50,9 @@ export default function BlogForm({
 	const [isPending, startTransition] = useTransition()
 	const [isPreview, setPreview] = useState(false)
 	const [files, setFiles] = useState<File[]>([])
-	const [uploadImage, setUploadImage] = useState<null | string>(null)
+	const [imagePaths, setImagePaths] = useState([])
+	const [isUploading, setIsUploading] = useState(false)
+	const [numberImage, setNumberImage] = useState(0)
 
 	const supabase = createClient(
 		process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -55,42 +65,97 @@ export default function BlogForm({
 		defaultValues: {
 			title: defaultBlog?.title,
 			content: defaultBlog?.blog_content.content,
-			image_url: defaultBlog?.image_url,
+			image_url: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}${defaultBlog?.image_url}`,
 			image_file: '',
 			is_premium: defaultBlog?.is_premium,
 			is_published: defaultBlog?.is_published,
+			fileInputs: [],
 		},
 	})
 
-	// `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET_URL}${userState.image}`
+	const { fields, append, remove } = useFieldArray({
+		control: form.control,
+		name: 'fileInputs',
+	})
 
-	const onSubmit = useCallback(
-		async (data: z.infer<typeof BlogFormSchema>) => {
-			startTransition(async () => {
-				let finalImageUrl = data.image_url // Use the existing image URL by default
+	const onSubmit = async (data: z.infer<typeof BlogFormSchema>) => {
+		startTransition(async () => {
+			let finalImageUrl = data.image_url
+			if (files.length > 0) {
+				const file = files[0]
+				const filePath = `${Date.now()}-${file.name}`
+				const { data: uploadData, error: uploadError } = await supabase.storage
+					.from('images')
+					.upload(filePath, file)
 
-				if (files.length > 0) {
-					const file = files[0]
-					const filePath = `${Date.now()}-${file.name}`
-
-					const { data: uploadData, error: uploadError } =
-						await supabase.storage.from('images').upload(filePath, file)
-
-					if (uploadError) {
-						console.error('Error uploading file:', uploadError)
-						return
-					}
-
-					if (uploadData && uploadData.path) {
-						finalImageUrl = uploadData.path // Use the new image URL
-					}
+				if (uploadError) {
+					console.error('Error uploading file:', uploadError)
+					return
 				}
 
-				onHandleSubmit(data, `${finalImageUrl}`)
-			})
-		},
-		[files, onHandleSubmit, supabase.storage]
-	)
+				if (uploadData && uploadData.path) {
+					finalImageUrl = uploadData.path
+				}
+			}
+
+			const submitData = { ...data }
+			delete submitData.fileInputs
+
+			onHandleSubmit(submitData, `${finalImageUrl}`)
+		})
+	}
+
+	const handleRemoveFile = async (index: number) => {
+		const filePath = imagePaths[index]
+		if (!filePath) {
+			console.error('Path to file not found')
+			return
+		}
+
+		setIsUploading(true)
+		try {
+			await deleteImageFromSupabase(filePath)
+
+			const updatedImagePaths = imagePaths.filter((_, i) => i !== index)
+			setImagePaths(updatedImagePaths)
+
+			await updateDatabaseWithImagePaths(updatedImagePaths, defaultBlog)
+
+			remove(index)
+			setImagePaths(prev => prev.filter((_, i) => i !== index))
+		} catch (error) {
+			console.error('Error delete file:', error)
+		}
+		setIsUploading(false)
+	}
+
+	const copyToClipboard = async (num: number) => {
+		try {
+			const index = num - 1
+			const imagePath = imagePaths[index]
+
+			if (imagePath) {
+				const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}${imagePath}`
+				const markdownString = `![AltText {768x432}{priority}{caption: Image by Something}](${imageUrl})`
+				await navigator.clipboard.writeText(markdownString)
+				toast({
+					title: 'Successfully copied!',
+				})
+			} else {
+				console.error('No image found for the provided index')
+			}
+		} catch (err) {
+			console.error('Failed to copy: ', err)
+		}
+	}
+
+	const handleNumberChange = async (event: any) => {
+		try {
+			setNumberImage(event.target.value)
+		} catch (error) {
+			console.error('Error number change')
+		}
+	}
 
 	return (
 		<Form {...form}>
@@ -185,8 +250,8 @@ export default function BlogForm({
 								<>
 									<div
 										className={cn(
-											'w-full flex break-words p-2 gap-2',
-											isPreview ? 'divide-x-0' : 'divide-x'
+											'w-full flex break-words p-2 gap-2'
+											// isPreview ? 'divide-x-0' : 'divide-x'
 										)}
 									>
 										<Input
@@ -194,8 +259,8 @@ export default function BlogForm({
 											{...field}
 											autoFocus
 											className={cn(
-												'border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500',
-												isPreview ? 'w-0 p-0' : 'w-full lg:w-1/2'
+												'border text-lg font-medium leading-relaxed focus:ring-1 ring-green-500',
+												isPreview ? 'w-0 p-0 hidden' : 'w-full lg:w-1/2'
 											)}
 										/>
 										<div
@@ -207,7 +272,7 @@ export default function BlogForm({
 											)}
 										>
 											<h1 className='text-3xl font-bold dark:text-gray-200'>
-												{form.getValues().title || 'Untittle blog'}
+												{form.getValues().title || 'Untitled blog'}
 											</h1>
 										</div>
 									</div>
@@ -233,8 +298,8 @@ export default function BlogForm({
 								<FormControl>
 									<div
 										className={cn(
-											'w-full flex divide-x p-2 gap-2 items-center',
-											isPreview ? 'divide-x-0' : 'divide-x',
+											'w-full flex p-2 gap-2 items-center',
+											// isPreview ? 'divide-x-0' : 'divide-x',
 											isPreview && !form.getValues().image_url && 'hidden'
 										)}
 									>
@@ -242,8 +307,8 @@ export default function BlogForm({
 											placeholder='🔗 Image url'
 											{...field}
 											className={cn(
-												'border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 ',
-												isPreview ? 'w-0 p-0' : 'w-full lg:w-1/2'
+												'border text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 ',
+												isPreview ? 'w-0 p-0 hidden' : 'w-full lg:w-1/2'
 											)}
 											type='url'
 										/>
@@ -258,10 +323,14 @@ export default function BlogForm({
 											{isPreview ? (
 												<>
 													{form.getValues().image_url && (
-														<div className='w-full h-80 relative mt-10 border rounded-md'>
+														<div className='w-[300px] h-[300px] md:w-full md:h-[1000px] mx-auto relative mt-10 border rounded-md'>
 															<Image
-																src={form.getValues().image_url || ''}
-																alt='preview'
+																src={
+																	`${
+																		process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL
+																	}${form.getValues().image_url}` || ''
+																}
+																alt='preview-img'
 																fill
 																className='object-cover object-center rounded-md'
 															/>
@@ -297,21 +366,22 @@ export default function BlogForm({
 							<FormControl>
 								<div
 									className={cn(
-										'w-full flex divide-x p-2 gap-2 items-center',
-										isPreview ? 'divide-x-0' : 'divide-x',
+										'w-full flex p-2 gap-2 items-center',
+										// isPreview ? 'divide-x-0' : 'divide-x',
 										isPreview && !form.getValues().image_file && 'hidden'
 									)}
 								>
 									<Input
 										type='file'
 										accept='image/*'
-										placeholder='Add profile photo'
+										placeholder='Add image'
 										className={cn(
-											'border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 ',
-											isPreview ? 'w-0 p-0' : 'w-full lg:w-1/2'
+											'border text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 ',
+											isPreview ? 'w-0 p-0 hidden' : 'w-full lg:w-1/2'
 										)}
 										onChange={e => handleImage(e, field.onChange, setFiles)}
 									/>
+
 									<div
 										className={cn(
 											' relative',
@@ -320,13 +390,13 @@ export default function BlogForm({
 												: 'px-10 w-1/2 lg:block hidden'
 										)}
 									>
-										{isPreview && (
-											<div className='w-full h-80 relative border rounded-md'>
+										{isPreview && field?.value && (
+											<div className='w-[300px] h-[300px] md:w-full md:h-[1000px] mx-auto relative border rounded-md'>
 												<Image
 													src={field?.value}
-													alt='preview'
+													alt='preview-file'
 													fill
-													className=' object-cover object-center rounded-md'
+													className='object-cover object-center rounded-md'
 												/>
 											</div>
 										)}
@@ -341,6 +411,78 @@ export default function BlogForm({
 					)}
 				/>
 
+				{/* <FormField
+					control={form.control}
+					name='image_file'
+					render={({ field }) => (
+						
+					)}
+					/> */}
+				{!isPreview && (
+					<div className='space-y-3 mr-16 mb-4 mx-2 flex flex-col'>
+						<label htmlFor=''>Article Images</label>
+						{fields.map((field, index) => (
+							<div key={field.id} className='flex items-center'>
+								<Input
+									type='file'
+									placeholder='Choose Image'
+									{...form.register(`fileInputs.${index}` as const)}
+									className={cn(
+										'border text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 mr-2',
+										isPreview ? 'w-0 p-0 hidden' : 'w-full lg:w-1/2'
+									)}
+									onChange={e =>
+										handleFileChange(
+											e,
+											index,
+											setIsUploading,
+											defaultBlog,
+											imagePaths,
+											setImagePaths
+										)
+									}
+								/>
+								<button
+									type='button'
+									disabled={isUploading}
+									onClick={() => handleRemoveFile(index)}
+								>
+									<Cross1Icon />
+								</button>
+							</div>
+						))}
+						<Button
+							type='button'
+							onClick={() => append('')}
+							className='p-2 border rounded-md mb-4 w-[85px]'
+							disabled={isUploading}
+						>
+							{isUploading ? 'Wait...' : 'Add File'}
+						</Button>
+					</div>
+				)}
+
+				{!isPreview && (
+					<div className='space-y-4 mr-16 mb-4 ml-2 flex flex-col'>
+						<Input
+							type='number'
+							placeholder='Number of image'
+							onChange={e => handleNumberChange(e)}
+							className={cn(
+								'border text-lg font-medium leading-relaxed focus:ring-1 ring-green-500',
+								isPreview ? 'w-0 p-0 hidden' : 'w-full lg:w-1/2'
+							)}
+						/>
+						<Button
+							type='button'
+							className='w-[200px]'
+							onClick={() => copyToClipboard(numberImage)}
+						>
+							Copy ![AltText
+						</Button>
+					</div>
+				)}
+
 				<FormField
 					control={form.control}
 					name='content'
@@ -349,16 +491,16 @@ export default function BlogForm({
 							<FormControl>
 								<div
 									className={cn(
-										'w-full flex p-2 gap-2 ',
-										!isPreview ? 'divide-x h-70vh' : 'divide-x-0'
+										'w-full flex p-2 gap-2 '
+										// !isPreview ? 'divide-x h-70vh' : 'divide-x-0'
 									)}
 								>
 									<Textarea
 										placeholder='Blog content'
 										{...field}
 										className={cn(
-											'border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500  h-70vh resize-none',
-											isPreview ? 'w-0 p-0' : 'w-full lg:w-1/2'
+											'border text-lg font-medium leading-relaxed focus:ring-1 ring-green-500  h-70vh resize-none',
+											isPreview ? 'w-0 p-0 hidden' : 'w-full lg:w-1/2'
 										)}
 									/>
 									<div

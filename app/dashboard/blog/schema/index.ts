@@ -11,6 +11,7 @@ export const BlogFormSchema = z.object({
 	image_file: z.string(),
 	is_premium: z.boolean(),
 	is_published: z.boolean(),
+	fileInputs: z.array(z.any()).optional(),
 })
 // .refine(
 // 	data => {
