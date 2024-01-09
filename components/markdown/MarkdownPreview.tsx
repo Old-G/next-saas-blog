@@ -40,12 +40,12 @@ export default function MarkdownPreview({
 						const caption = metastring?.match(/{caption: (.*?)}/)?.pop()
 
 						return (
-							<div className='w-full h-[125px] md:h-[180px] relative mt-10 md:border rounded-md'>
+							<div className='w-full h-[125px] md:h-80 relative mt-10 md:border rounded-md'>
 								<Image
 									src={image.properties.src}
 									fill
-									className='object-contain md:object-contain object-center rounded-md'
-									sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+									className='object-contain md:object-cover object-center rounded-md'
+									// sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 									alt={alt}
 									priority={isPriority}
 								/>
