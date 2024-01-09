@@ -11,10 +11,10 @@ import {
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
-import { handleImage } from '@/lib/helpers'
+import { handleImage, normalizeImageUrl } from '@/lib/helpers'
 import {
 	deleteImageFromSupabase,
-	handleFileChange,
+	handleMultipleFilesChange,
 	updateDatabaseWithImagePaths,
 } from '@/lib/helpers/blogHelpers'
 import { IBlogDetails } from '@/lib/types'
@@ -65,10 +65,9 @@ export default function BlogForm({
 		defaultValues: {
 			title: defaultBlog?.title,
 			content: defaultBlog?.blog_content.content,
-			image_url:
-				defaultBlog?.image_url === ''
-					? defaultBlog?.image_url
-					: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}${defaultBlog?.image_url}`,
+			image_url: defaultBlog?.image_url
+				? normalizeImageUrl(defaultBlog.image_url)
+				: '',
 			image_file: '',
 			is_premium: defaultBlog?.is_premium,
 			is_published: defaultBlog?.is_published,
@@ -234,7 +233,7 @@ export default function BlogForm({
 						role='button'
 						className={cn(
 							'flex gap-2 items-center border px-3 py-2 rounded-md border-green-500 bg-green-500 disabled:border-gray-800 transition-all group text-sm disabled:bg-zinc-900',
-							{ 'animate-spin': isPending }
+							{ 'animate-bounce': isPending }
 						)}
 						disabled={!form.formState.isValid}
 					>
@@ -329,9 +328,9 @@ export default function BlogForm({
 														<div className='w-[300px] h-[300px] md:w-full md:h-[1000px] mx-auto relative mt-10 border rounded-md'>
 															<Image
 																src={
-																	`${
-																		process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL
-																	}${form.getValues().image_url}` || ''
+																	`${normalizeImageUrl(
+																		form.getValues().image_url!
+																	)}` || ''
 																}
 																alt='preview-img'
 																fill
@@ -421,13 +420,14 @@ export default function BlogForm({
 						
 					)}
 					/> */}
-				{!isPreview && (
+				{/* {!isPreview && (
 					<div className='space-y-3 mr-16 mb-4 mx-2 flex flex-col'>
 						<label htmlFor=''>Article Images</label>
 						{fields.map((field, index) => (
 							<div key={field.id} className='flex items-center'>
 								<Input
 									type='file'
+									multiple
 									placeholder='Choose Image'
 									{...form.register(`fileInputs.${index}` as const)}
 									className={cn(
@@ -435,13 +435,12 @@ export default function BlogForm({
 										isPreview ? 'w-0 p-0 hidden' : 'w-full lg:w-1/2'
 									)}
 									onChange={e =>
-										handleFileChange(
+										handleMultipleFilesChange(
 											e,
-											index,
 											setIsUploading,
-											defaultBlog,
 											imagePaths,
-											setImagePaths
+											setImagePaths,
+											defaultBlog
 										)
 									}
 								/>
@@ -462,6 +461,48 @@ export default function BlogForm({
 						>
 							{isUploading ? 'Wait...' : 'Add File'}
 						</Button>
+					</div>
+				)} */}
+
+				{!isPreview && (
+					<div className='space-y-3 mr-16 mb-4 mx-2 flex flex-col'>
+						<label htmlFor=''>Article Images</label>
+						<div className='flex items-center'>
+							<Input
+								type='file'
+								multiple
+								placeholder='Choose Images'
+								{...form.register('fileInputs')}
+								className='border text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 w-full lg:w-1/2 mr-2'
+								onChange={e =>
+									handleMultipleFilesChange(
+										e,
+										setIsUploading,
+										imagePaths,
+										setImagePaths,
+										defaultBlog
+									)
+								}
+							/>
+						</div>
+						{imagePaths.map((path, index) => (
+							<>
+								{!isUploading ? (
+									<div key={index} className='flex items-center'>
+										<span>{path}</span>
+										<button
+											type='button'
+											disabled={isUploading}
+											onClick={() => handleRemoveFile(index)}
+										>
+											<Cross1Icon />
+										</button>
+									</div>
+								) : (
+									<div className=''>Uploading...</div>
+								)}
+							</>
+						))}
 					</div>
 				)}
 

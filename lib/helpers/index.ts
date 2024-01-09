@@ -28,8 +28,6 @@ export const handleImage = (
 
 export function normalizeImageUrl(imagePath: string) {
 	if (imagePath.startsWith('http')) {
-		console.log(imagePath)
-
 		return imagePath
 	} else {
 		return `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}${imagePath}`

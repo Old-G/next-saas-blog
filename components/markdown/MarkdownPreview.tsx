@@ -40,11 +40,12 @@ export default function MarkdownPreview({
 						const caption = metastring?.match(/{caption: (.*?)}/)?.pop()
 
 						return (
-							<div className='w-full h-[125px] md:h-80 relative mt-10 md:border rounded-md'>
+							<div className='w-full h-[125px] md:h-[180px] relative mt-10 md:border rounded-md'>
 								<Image
 									src={image.properties.src}
 									fill
-									className='object-contain md:object-cover object-center rounded-md'
+									className='object-contain md:object-contain object-center rounded-md'
+									sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 									alt={alt}
 									priority={isPriority}
 								/>
@@ -67,6 +68,12 @@ export default function MarkdownPreview({
 				},
 				h3: ({ node, ...props }) => {
 					return <h1 {...props} className='text-xl font-bold mt-10 mb-10' />
+				},
+				a: ({ node, ...props }) => {
+					return <a {...props} className='text-blue-400' />
+				},
+				strong: ({ node, className, ...props }) => {
+					return <strong {...props} className='text-green-300' />
 				},
 				code: ({ node, className, children, ...props }) => {
 					const match = /language-(\w+)/.exec(className || '')

@@ -120,7 +120,7 @@ const HomeBlogs = () => {
 				})}
 			</div>
 
-			{blogs?.length > 1 && (
+			{blogs?.length > 8 && (
 				<Button
 					disabled={active}
 					onClick={handleNextClick}

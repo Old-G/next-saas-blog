@@ -61,6 +61,33 @@ export const handleFileChange = async (
 	}
 }
 
+export const handleMultipleFilesChange = async (
+	event: any,
+	setIsUploading: any,
+	imagePaths: string[],
+	setImagePaths: any,
+	blog: any
+) => {
+	const selectedFiles = Array.from(event.target.files)
+	const newImagePaths = [...imagePaths]
+
+	setIsUploading(true)
+
+	try {
+		for (const file of selectedFiles) {
+			//@ts-ignore
+			const filePath = await uploadFileToSupabase(file)
+			newImagePaths.push(filePath)
+		}
+		setImagePaths(newImagePaths)
+		await updateDatabaseWithImagePaths(newImagePaths, blog)
+	} catch (error) {
+		console.error('Error handling files:', error)
+	} finally {
+		setIsUploading(false)
+	}
+}
+
 export async function deleteImageFromSupabase(filePath: string) {
 	const { error } = await supabase.storage.from('images').remove([filePath])
 
