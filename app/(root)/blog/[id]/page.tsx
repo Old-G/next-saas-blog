@@ -1,5 +1,6 @@
 import { normalizeImageUrl } from '@/lib/helpers'
 import { IBlog } from '@/lib/types'
+import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import Content from '../../../../components/skeletons-content/Content'
 
@@ -10,6 +11,8 @@ import Content from '../../../../components/skeletons-content/Content'
 
 // 	return blogs
 // }
+
+const START_BLOG_ID = '17744d19-5921-4f4f-9715-e990578e8828'
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
 	const { data: blog } = (await fetch(
@@ -71,7 +74,12 @@ export default async function page({ params }: { params: { id: string } }) {
 				</p>
 			</div>
 
-			<div className='w-full h-[335px] md:h-[1000px] relative'>
+			<div
+				className={cn(
+					'w-full h-[335px] relative',
+					blog?.id === START_BLOG_ID ? 'md:h-96' : 'md:h-[1000px]'
+				)}
+			>
 				<Image
 					priority
 					src={normalizeImageUrl(blog?.image_url!)}

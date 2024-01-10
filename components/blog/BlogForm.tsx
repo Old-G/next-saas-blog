@@ -138,7 +138,7 @@ export default function BlogForm({
 
 			if (imagePath) {
 				const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}${imagePath}`
-				const markdownString = `![AltText {768x432}{priority}{caption: Image by Something}](${imageUrl})`
+				const markdownString = `![AltText {768x432}{priority}](${imageUrl})`
 				await navigator.clipboard.writeText(markdownString)
 				toast({
 					title: 'Successfully copied!',
