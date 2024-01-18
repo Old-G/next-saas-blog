@@ -21,6 +21,30 @@ export default function Content({ blogId }: { blogId: string }) {
 	)
 
 	useEffect(() => {
+		const imgId = document.getElementById('imgId')
+		const timeout = setTimeout(() => {
+			// console.log(imgId)
+		}, 3000)
+
+		return () => clearTimeout(timeout)
+	}, [])
+
+	useEffect(() => {
+		if (!loading) {
+			if (window.location.hash) {
+				const id = window.location.hash.replace('#', '')
+				const element = document.getElementById(id)
+				if (element) {
+					element.scrollIntoView({
+						behavior: 'smooth',
+						block: 'start',
+					})
+				}
+			}
+		}
+	}, [loading])
+
+	useEffect(() => {
 		const readBlogContent = async () => {
 			const { data } = await supabase
 				.from('blog_content')

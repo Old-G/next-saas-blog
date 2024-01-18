@@ -27,13 +27,13 @@ export default function Footer() {
 			<div className='flex flex-col md:flex-row justify-between space-y-6 md:space-y-0'>
 				<div className='space-y-10'>
 					<div className='flex items-center gap-3'>
-						<Link href='https://t.me/ginsights' target='blank'>
+						<Link href='https://t.me/ginsights' target='_blank'>
 							<PaperPlaneIcon className='w-5 h-5 rotate-[-45deg]' />
 						</Link>
-						<Link href='https://instagram.com/oldg9516' target='blank'>
+						<Link href='https://instagram.com/oldg9516' target='_blank'>
 							<InstagramLogoIcon className='w-5 h-5' />
 						</Link>
-						<Link href='https://t.me/+RgtAHo2lpH9mYTky' target='blank'>
+						<Link href='https://t.me/+RgtAHo2lpH9mYTky' target='_blank'>
 							<ChatBubbleIcon className='w-5 h-5' />
 						</Link>
 						{/* <Link href='/'>

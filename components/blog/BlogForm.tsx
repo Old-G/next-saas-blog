@@ -261,7 +261,7 @@ export default function BlogForm({
 											{...field}
 											autoFocus
 											className={cn(
-												'border text-lg font-medium leading-relaxed focus:ring-1 ring-green-500',
+												'border border-blue-400 text-lg font-medium leading-relaxed focus:ring-1 ring-green-500',
 												isPreview ? 'w-0 p-0 hidden' : 'w-full lg:w-1/2'
 											)}
 										/>
@@ -309,7 +309,7 @@ export default function BlogForm({
 											placeholder='🔗 Image url'
 											{...field}
 											className={cn(
-												'border text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 ',
+												'border border-green-400 text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 ',
 												isPreview ? 'w-0 p-0 hidden' : 'w-full lg:w-1/2'
 											)}
 											type='url'
@@ -378,7 +378,7 @@ export default function BlogForm({
 										accept='image/*'
 										placeholder='Add image'
 										className={cn(
-											'border text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 ',
+											'border border-green-400 text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 ',
 											isPreview ? 'w-0 p-0 hidden' : 'w-full lg:w-1/2'
 										)}
 										onChange={e => handleImage(e, field.onChange, setFiles)}
@@ -465,55 +465,63 @@ export default function BlogForm({
 				)} */}
 
 				{!isPreview && (
-					<div className='space-y-3 mr-16 mb-4 mx-2 flex flex-col'>
-						<label htmlFor=''>Article Images</label>
-						<div className='flex items-center'>
-							<Input
-								type='file'
-								multiple
-								placeholder='Choose Images'
-								{...form.register('fileInputs')}
-								className='border text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 w-full lg:w-1/2 mr-2'
-								onChange={e =>
-									handleMultipleFilesChange(
-										e,
-										setIsUploading,
-										imagePaths,
-										setImagePaths,
-										defaultBlog
-									)
-								}
-							/>
+					<div className='mb-4 ml-2 mr-4 flex flex-col'>
+						<label htmlFor='' className='text-red-400'>
+							Article Images
+						</label>
+						<div className='flex items-center mb-3'>
+							{isUploading ? (
+								<div>Uploading...</div>
+							) : (
+								<Input
+									type='file'
+									multiple
+									placeholder='Choose Images'
+									{...form.register('fileInputs')}
+									className='border border-red-400 text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 w-full lg:w-1/2'
+									onChange={e =>
+										handleMultipleFilesChange(
+											e,
+											setIsUploading,
+											imagePaths,
+											setImagePaths,
+											defaultBlog
+										)
+									}
+								/>
+							)}
 						</div>
-						{imagePaths.map((path, index) => (
-							<>
-								{!isUploading ? (
-									<div key={index} className='flex items-center'>
-										<span>{path}</span>
-										<button
-											type='button'
-											disabled={isUploading}
-											onClick={() => handleRemoveFile(index)}
-										>
-											<Cross1Icon />
-										</button>
-									</div>
-								) : (
-									<div className=''>Uploading...</div>
-								)}
-							</>
-						))}
+						<div className='space-y-3 ml-4'>
+							{imagePaths.map((path, index) => (
+								<div key={path}>
+									{!isUploading ? (
+										<div className='flex items-center'>
+											<span>{path}</span>
+											<button
+												type='button'
+												disabled={isUploading}
+												onClick={() => handleRemoveFile(index)}
+											>
+												<Cross1Icon />
+											</button>
+										</div>
+									) : (
+										<div className=''>Uploading...</div>
+									)}
+								</div>
+							))}
+						</div>
 					</div>
 				)}
 
 				{!isPreview && (
-					<div className='space-y-4 mr-16 mb-4 ml-2 flex flex-col'>
+					<div className='space-y-4 mb-4 ml-2 mr-4 flex flex-col'>
 						<Input
 							type='number'
 							placeholder='Number of image'
 							onChange={e => handleNumberChange(e)}
 							className={cn(
-								'border text-lg font-medium leading-relaxed focus:ring-1 ring-green-500',
+								'border border-blue-400 text-lg font-medium leading-relaxed focus:ring-1 ring-green-500',
 								isPreview ? 'w-0 p-0 hidden' : 'w-full lg:w-1/2'
 							)}
 						/>

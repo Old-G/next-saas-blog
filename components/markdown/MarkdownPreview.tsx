@@ -40,7 +40,7 @@ export default function MarkdownPreview({
 						const caption = metastring?.match(/{caption: (.*?)}/)?.pop()
 
 						return (
-							<div className='w-full h-[150px] md:h-[432px] relative mt-10 rounded-md'>
+							<div className='w-full h-[150px] md:h-[412px] relative mt-10 rounded-md'>
 								<Image
 									src={image.properties.src}
 									fill
@@ -48,6 +48,7 @@ export default function MarkdownPreview({
 									sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 									alt={alt}
 									priority={isPriority}
+									id='imgId'
 								/>
 								{hasCaption ? (
 									<div className='caption' aria-label={caption}>
@@ -64,13 +65,29 @@ export default function MarkdownPreview({
 					return <h1 {...props} className='text-3xl font-bold' />
 				},
 				h2: ({ node, ...props }) => {
-					return <h1 {...props} className='text-2xl font-bold mt-10 mb-10' />
+					return <h2 {...props} className='text-2xl font-bold mt-10 mb-10' />
 				},
 				h3: ({ node, ...props }) => {
-					return <h1 {...props} className='text-xl font-bold mt-10 mb-10' />
+					//@ts-ignore
+					const isIdeas = node?.children?.[0]?.value === 'А теперь о '
+					return (
+						<h3
+							{...props}
+							className='text-xl font-bold mt-10 mb-10'
+							id={isIdeas ? 'ideas' : undefined}
+						/>
+					)
+				},
+				h4: ({ node, ...props }) => {
+					return (
+						<h4
+							{...props}
+							className='text-lg font-bold mt-10 mb-10 text-blue-400'
+						/>
+					)
 				},
 				a: ({ node, ...props }) => {
-					return <a {...props} className='text-blue-400' target='blank' />
+					return <a {...props} className='text-blue-400' target='_blank' />
 				},
 				strong: ({ node, className, ...props }) => {
 					return <strong {...props} className='text-green-300' />
