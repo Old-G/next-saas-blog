@@ -18,7 +18,7 @@ export default function MarkdownPreview({
 	return (
 		<Markdown
 			className={cn(
-				'dark:text-gray-200 space-y-8 text-ellipsis overflow-hidden',
+				'dark:text-gray-200 space-y-6 text-ellipsis overflow-hidden',
 				className
 			)}
 			rehypePlugins={[rehypeHighlight]}
@@ -65,7 +65,7 @@ export default function MarkdownPreview({
 					return <h1 {...props} className='text-3xl font-bold' />
 				},
 				h2: ({ node, ...props }) => {
-					return <h2 {...props} className='text-2xl font-bold mt-10 mb-10' />
+					return <h2 {...props} className='text-2xl font-bold mt-10 mb-3' />
 				},
 				h3: ({ node, ...props }) => {
 					//@ts-ignore
@@ -73,7 +73,7 @@ export default function MarkdownPreview({
 					return (
 						<h3
 							{...props}
-							className='text-xl font-bold mt-10 mb-10'
+							className='text-xl font-bold mt-10 mb-3'
 							id={isIdeas ? 'ideas' : undefined}
 						/>
 					)
@@ -82,7 +82,7 @@ export default function MarkdownPreview({
 					return (
 						<h4
 							{...props}
-							className='text-lg font-bold mt-10 mb-10 text-blue-400'
+							className='text-lg font-bold mt-10 mb-3 text-blue-400'
 						/>
 					)
 				},
