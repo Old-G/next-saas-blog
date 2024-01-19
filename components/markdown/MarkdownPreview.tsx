@@ -18,7 +18,7 @@ export default function MarkdownPreview({
 	return (
 		<Markdown
 			className={cn(
-				'dark:text-gray-200 space-y-6 text-ellipsis overflow-hidden',
+				'dark:text-gray-200 space-y- text-ellipsis overflow-hidden',
 				className
 			)}
 			rehypePlugins={[rehypeHighlight]}
@@ -58,14 +58,14 @@ export default function MarkdownPreview({
 							</div>
 						)
 					}
-					return <p>{paragraph.children}</p>
+					return <p className='mb-10'>{paragraph.children}</p>
 				},
 
 				h1: ({ node, ...props }) => {
 					return <h1 {...props} className='text-3xl font-bold' />
 				},
 				h2: ({ node, ...props }) => {
-					return <h2 {...props} className='text-2xl font-bold mt-10 mb-3' />
+					return <h2 {...props} className='text-2xl font-bold mb-3' />
 				},
 				h3: ({ node, ...props }) => {
 					//@ts-ignore
@@ -73,18 +73,19 @@ export default function MarkdownPreview({
 					return (
 						<h3
 							{...props}
-							className='text-xl font-bold mt-10 mb-3'
+							className={cn('text-xl font-bold mb-3', isIdeas && 'mb-5')}
 							id={isIdeas ? 'ideas' : undefined}
 						/>
 					)
 				},
 				h4: ({ node, ...props }) => {
-					return (
-						<h4
-							{...props}
-							className='text-lg font-bold mt-10 mb-3 text-blue-400'
-						/>
-					)
+					return <h4 {...props} className='text-lg font-bold text-blue-400' />
+				},
+				ul: ({ node, ...props }) => {
+					return <ul {...props} className='mb-10 space-y-2' />
+				},
+				hr: ({ node, ...props }) => {
+					return <hr {...props} className='mb-10' />
 				},
 				a: ({ node, ...props }) => {
 					return <a {...props} className='text-blue-400' target='_blank' />
